@@ -1,0 +1,209 @@
+# ============================================================
+#  RebirthDimension — config.yml
+#  Nilai yang tidak masuk akal akan dikoreksi otomatis saat
+#  plugin dimuat (lihat console untuk peringatan).
+#  Setelah mengubah file ini: /rebirth reload
+#  (perubahan nama world Rebirth butuh restart server)
+# ============================================================
+
+rebirth:
+  # Durasi default dalam detik (1800 = 30 menit). Batas: 10 - 604800.
+  duration-seconds: 1800
+  # Kematian di world berikut memicu Rebirth.
+  enabled-worlds:
+    - world
+    - world_nether
+    - world_the_end
+  # Nama tampilan dimensi di pesan/judul/BossBar (placeholder <dimension>).
+  dimension-name: "Null Entity"
+  # Nama world Rebirth (dibuat otomatis kalau belum ada).
+  # TIDAK boleh sama dengan world utama. Pakai nama BARU agar tidak
+  # memuat ulang world prototype lama (yang masih punya blok bedrock).
+  world-name: null_entity
+  # Jenis dimensi world Rebirth: THE_END (langit The End, void kosong), NORMAL (overworld), NETHER.
+  # Environment tidak bisa diubah pada world yang sudah ada: ganti juga world-name ke nama BARU,
+  # lalu /rebirth reload (world baru dibuat otomatis).
+  environment: THE_END
+  # Pusat dimensi & titik muncul pemain.
+  # PENTING (dunia THE_END): jauhkan pusat dari koordinat 0,0 (>= 1000 blok). Dragon fight bawaan Minecraft
+  # berpusat di 0,0 dan menampilkan BossBar "Ender Dragon" (+ kabut langit) ke pemain dalam ~192 blok darinya.
+  center:
+    x: 3000.5
+    y: 100.0
+    z: 3000.5
+  # 0.0 = semua pemain muncul di koordinat X/Z yang sama persis.
+  # Nilai di atas 0 membuat titik muncul tersebar acak dalam radius tersebut.
+  spawn-scatter: 0.0
+  # Hanya untuk environment NORMAL: kunci jam langit (18000 = tengah malam). -1 = jangan ubah.
+  sky-time: -1
+
+# Fallback jika pemain tidak punya respawn point valid (mis. bed dihancurkan).
+# Default: gunakan world spawn utama. Respawn point pribadi yang valid diprioritaskan.
+return:
+  world: world
+  # true = pakai spawn world tujuan. false = pakai koordinat di bawah.
+  use-world-spawn: true
+  x: 0.5
+  y: 80.0
+  z: 0.5
+  yaw: 0.0
+  pitch: 0.0
+
+flight:
+  allow-flight: true
+  start-flying: true
+  # 0.05 - 0.5 (vanilla = 0.1)
+  fly-speed: 0.1
+
+# Batas area. Melewati radius + hard-margin = langsung di-teleport ke TENGAH (center).
+# hard-margin > 0 memberi zona dorongan halus dulu sebelum teleport.
+# Lantai Barrier tak terlihat dibangun tepat di bawah min-y (tidak bisa terbang ke bawah).
+# Jika radius > 150 lantai tidak dibangun (batas vertikal tetap menjaga pemain).
+boundary:
+  enabled: true
+  radius: 20.0
+  hard-margin: 0.0
+  min-y: 95.0
+  max-y: 140.0
+  push-strength: 0.6
+  check-interval-ticks: 5
+  return-cooldown-ticks: 20
+
+protection:
+  no-damage: true
+  no-pvp: true
+  no-hunger: true
+  no-building: true
+  no-projectiles: true
+  # Mencegah item terbuang ke void (data/inventaris pemain aman).
+  no-item-drop: true
+  block-mob-spawns: true
+  # Perintah yang diblokir selama Rebirth (tanpa "/"). Penjagaan sebenarnya
+  # ada di event teleport; daftar ini hanya pelengkap.
+  blocked-commands:
+    - home
+    - homes
+    - spawn
+    - tpa
+    - tpahere
+    - tpaccept
+    - back
+    - warp
+    - rtp
+    - wild
+    - tp
+    - teleport
+    - suicide
+
+bossbar:
+  enabled: true
+  # MiniMessage. Placeholder: <time> (MM:SS), <dimension>
+  title: "<gradient:#c4b5fd:#22d3ee>Terlahir Kembali</gradient> <dark_gray>:</dark_gray> <bold><white><time></white></bold>"
+  # PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+  color: PURPLE
+  # PROGRESS, NOTCHED_6, NOTCHED_10, NOTCHED_12, NOTCHED_20
+  overlay: PROGRESS
+
+# Aurora berbasis partikel (sisi server). Keterbatasan: lihat README.
+aurora:
+  enabled: true
+  # Interval render (tick). 10 - 100. Makin besar = lebih ringan.
+  update-interval-ticks: 20
+  # Hanya bagian aurora dalam jarak ini (blok) dari pemain yang digambar. 16 - 128.
+  render-distance: 64.0
+  # Batas jumlah paket partikel per update (anggaran performa). 50 - 3000.
+  max-points-per-update: 600
+  # Jarak antar cincin pita dari pusat (blok). Jumlah cincin mengikuti radius batas area.
+  ring-spacing: 80.0
+  # Lapisan pita per cincin (1 - 3).
+  layers: 3
+  # Tinggi dasar pita di atas pusat Rebirth, dan tinggi tirai (blok).
+  base-height: 40.0
+  height: 30.0
+  # Jarak antar kolom sepanjang pita (blok). 1.0 - 8.0
+  point-spacing: 2.5
+  # Ukuran partikel dust. 0.5 - 4.0
+  particle-size: 3.0
+  # Kecepatan aliran. 0.1 - 3.0
+  speed: 1.0
+  # Gradasi dari bawah ke atas tirai (hex).
+  colors:
+    - "#14b8a6"   # teal
+    - "#22d3ee"   # cyan
+    - "#3b82f6"   # biru
+    - "#7c3aed"   # ungu
+    - "#4c1d95"   # ungu gelap
+
+effects:
+  enter:
+    enabled: true
+    # Layar "berkedip" lalu membuka mata (BLINDNESS: gelap -> kedip -> memudar terbuka). 0 = matikan.
+    # Partikel mulai saat mata mulai terbuka (blink-ticks - 20).
+    blink-ticks: 50
+    # Lama animasi partikel (10 - 100 tick)
+    duration-ticks: 70
+    # Kepadatan partikel putih yang memutari tubuh (1 - 8). Otomatis dikurangi saat banyak efek bersamaan.
+    density: 6
+    sounds:
+      - sound: "minecraft:block.beacon.activate"
+        volume: 0.6
+        pitch: 1.6
+        delay: 0
+      - sound: "minecraft:block.amethyst_block_resonate"
+        volume: 0.9
+        pitch: 1.0
+        delay: 0
+      - sound: "minecraft:block.amethyst_block_chime"
+        volume: 0.9
+        pitch: 1.3
+        delay: 45
+  exit:
+    enabled: true
+    # Lama efek sebelum teleport ke dunia utama (10 - 80). Teleport tetap jalan jika efek gagal.
+    duration-ticks: 60
+    density: 6
+    # Layar memutih menjelang teleport, lalu putihnya memudar setelah tiba di dunia utama.
+    # (Partikel FLASH di depan mata; hasil perlu dicek di klien. false = matikan.)
+    white-flash: true
+    # Lama putih memudar setelah tiba (10 - 100 tick)
+    fade-ticks: 40
+    sounds:
+      - sound: "minecraft:block.beacon.deactivate"
+        volume: 0.6
+        pitch: 1.4
+        delay: 0
+      - sound: "minecraft:block.amethyst_block_resonate"
+        volume: 0.9
+        pitch: 1.6
+        delay: 20
+      - sound: "minecraft:entity.enderman.teleport"
+        volume: 0.7
+        pitch: 1.4
+        delay: 54
+
+# Stardust angkasa di sekitar pemain (ungu / biru / putih). Dikirim hanya ke pemain di world Rebirth.
+stardust:
+  enabled: true
+  # Interval (tick) dan jumlah partikel per update per pemain. Makin kecil/besar = lebih ringan/ramai.
+  update-interval-ticks: 4
+  particles-per-update: 18
+  # Radius sebaran di sekitar pemain (blok). Maks 30 (partikel jauh >32 blok tidak digambar klien).
+  radius: 26.0
+  colors:
+    - "#ffffff"
+    - "#e0e7ff"
+    - "#a78bfa"
+    - "#7c3aed"
+    - "#60a5fa"
+    - "#3b82f6"
+
+# Pesan (MiniMessage). Placeholder: <dimension>. Kosongkan untuk menonaktifkan pesan tertentu.
+messages:
+  entered: "<gradient:#e9d5ff:#67e8f9>Kamu terlahir ke dalam <dimension>.</gradient> <gradient:#9ca3af:#cbd5e1>Terbanglah sampai waktumu habis.</gradient>"
+  enter-title: "<bold><gradient:#e9d5ff:#67e8f9><dimension></gradient></bold>"
+  enter-subtitle: "<gradient:#a78bfa:#67e8f9>Terlahir Kembali</gradient>"
+  exiting: "<gradient:#67e8f9:#ffffff>Waktumu di <dimension> telah habis...</gradient>"
+  boundary-warning: "<gradient:#a78bfa:#67e8f9>Kembali ke tengah <dimension>...</gradient>"
+  boundary-return: "<gradient:#a78bfa:#67e8f9>Kamu terlalu jauh. Ditarik kembali ke pusat.</gradient>"
+  blocked-teleport: "<gradient:#f0abfc:#a78bfa>Kamu belum bisa meninggalkan <dimension>.</gradient>"
+  blocked-command: "<gradient:#f0abfc:#a78bfa>Perintah itu tidak bisa dipakai di <dimension>.</gradient>"

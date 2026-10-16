@@ -1,0 +1,18 @@
+name: RebirthDimension
+version: '${project.version}'
+main: com.vanumz.rebirthdimension.Main
+api-version: '1.21'
+authors: [vanumz]
+description: Dimensi Rebirth bersama dengan timer pribadi, aurora partikel, dan efek transisi.
+commands:
+  rebirth:
+    description: Perintah admin RebirthDimension
+    usage: /rebirth <status|release|send|reload>
+    permission: rebirth.admin
+permissions:
+  rebirth.admin:
+    description: Akses perintah /rebirth
+    default: op
+  rebirth.bypass:
+    description: Boleh teleport keluar/membangun di dunia Rebirth (untuk admin/testing)
+    default: false
