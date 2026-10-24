@@ -1,0 +1,25 @@
+name: RebirthDimension
+version: '${project.version}'
+main: com.vanumz.rebirthdimension.Main
+api-version: '1.21'
+authors: [vanumz]
+description: Dimensi Rebirth bersama dengan timer pribadi, aurora partikel, dan efek transisi.
+commands:
+  rebirth:
+    description: Perintah admin RebirthDimension
+    usage: /rebirth <status|release|send|reload|debug|scene|blink|bed|packtest>
+    permission: rebirth.admin
+  guiscale:
+    description: Setel GUI scale untuk overlay kelopak/putih
+    usage: /guiscale <1-4|test>
+    permission: rebirth.guiscale
+permissions:
+  rebirth.guiscale:
+    description: Boleh memakai /guiscale
+    default: true
+  rebirth.admin:
+    description: Akses perintah /rebirth
+    default: op
+  rebirth.bypass:
+    description: Boleh teleport keluar/membangun di dunia Rebirth (untuk admin/testing)
+    default: false
